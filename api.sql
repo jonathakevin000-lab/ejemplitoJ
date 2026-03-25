@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-03-2026 a las 07:22:06
+-- Tiempo de generación: 25-03-2026 a las 15:51:42
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -69,6 +69,15 @@ CREATE TABLE `carreras` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `carreras`
+--
+
+INSERT INTO `carreras` (`id`, `nombre`, `descripcion`, `created_at`, `updated_at`) VALUES
+(2, 'Administración', 'Carrera administrativa', NULL, NULL),
+(3, 'RODOLFO NOÉ', 'daw', '2026-03-11 09:10:45', '2026-03-11 09:10:45'),
+(4, 'comida', 'comida', '2026-03-12 00:25:34', '2026-03-12 00:25:34');
+
 -- --------------------------------------------------------
 
 --
@@ -83,6 +92,13 @@ CREATE TABLE `grupos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `grupos`
+--
+
+INSERT INTO `grupos` (`id`, `nombre`, `semestre`, `carrera_id`, `created_at`, `updated_at`) VALUES
+(2, 'ADM-201', 2, 2, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -126,6 +142,15 @@ CREATE TABLE `roles` (
   `nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id`, `nombre`) VALUES
+(1, 'Administrador'),
+(2, 'Docente'),
+(4, 'Estudiante');
+
 -- --------------------------------------------------------
 
 --
@@ -144,6 +169,13 @@ CREATE TABLE `usuarios` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nombre`, `apaterno`, `amaterno`, `email`, `password`, `telefono`, `activo`, `created_at`, `updated_at`) VALUES
+(33, 'JONATHAN', 'ARANA', 'ARANA DIAZ', 'jonathakevin27@gmail.com', '1234567899', '24812731', 1, '2026-03-23 22:56:33', '2026-03-23 22:56:33');
 
 -- --------------------------------------------------------
 
@@ -236,55 +268,55 @@ ALTER TABLE `usuario_rol`
 -- AUTO_INCREMENT de la tabla `asignaciones`
 --
 ALTER TABLE `asignaciones`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `calificaciones`
 --
 ALTER TABLE `calificaciones`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `carreras`
 --
 ALTER TABLE `carreras`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `grupos`
 --
 ALTER TABLE `grupos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `inscripciones`
 --
 ALTER TABLE `inscripciones`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
 --
 ALTER TABLE `materias`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario_rol`
 --
 ALTER TABLE `usuario_rol`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -332,61 +364,6 @@ ALTER TABLE `usuario_rol`
   ADD CONSTRAINT `usuario_rol_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `usuario_rol_ibfk_2` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
 COMMIT;
-
--- =========================
--- DATOS DE PRUEBA
--- =========================
-
--- ROLES
-INSERT INTO roles (nombre) VALUES 
-('Administrador'),
-('Docente'),
-('Estudiante');
-
--- USUARIOS
-INSERT INTO usuarios (nombre, apaterno, amaterno, email, password, telefono, activo)
-VALUES 
-('Admin', 'Sistema', '', 'admin@api.com', '$2y$10$Password123', '1234567890', 1),
-('Juan', 'Perez', 'Lopez', 'juan@api.com', '$2y$10$Password123', '1111111111', 1),
-('Maria', 'Gomez', 'Torres', 'maria@api.com', '$2y$10$Password123', '2222222222', 1);
-
--- ASIGNAR ROL ADMIN AL PRIMER USUARIO
-INSERT INTO usuario_rol (usuario_id, rol_id)
-VALUES (1,1);
-
--- CARRERAS
-INSERT INTO carreras (nombre, descripcion)
-VALUES 
-('Ingeniería en Sistemas', 'Carrera tecnológica'),
-('Administración', 'Carrera administrativa');
-
--- GRUPOS
-INSERT INTO grupos (nombre, semestre, carrera_id)
-VALUES 
-('SIS-101', 1, 1),
-('ADM-201', 2, 2);
-
--- MATERIAS
-INSERT INTO materias (nombre, descripcion, creditos, carrera_id)
-VALUES 
-('Programación', 'Introducción a la programación', 5, 1),
-('Bases de Datos', 'Modelo relacional y SQL', 5, 1),
-('Contabilidad', 'Fundamentos básicos', 4, 2);
-
--- ASIGNACIONES
-INSERT INTO asignaciones (docente_id, materia_id, grupo_id)
-VALUES 
-(2, 1, 1);
-
--- INSCRIPCIONES
-INSERT INTO inscripciones (estudiante_id, grupo_id, ciclo_escolar)
-VALUES 
-(3, 1, '2026-1');
-
--- CALIFICACIONES
-INSERT INTO calificaciones (estudiante_id, materia_id, grupo_id, parcial1, parcial2, parcial3, promedio)
-VALUES 
-(3, 1, 1, 8.5, 9.0, 9.2, 8.9);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
