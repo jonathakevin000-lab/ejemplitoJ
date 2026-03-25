@@ -10,29 +10,48 @@ class MateriaController extends Controller
 {
     public function index()
     {
-        return Materia::with('carrera')->get();
+        return response()->json(Materia::with('carrera')->get());
     }
 
     public function store(Request $request)
     {
-        return Materia::create($request->all());
+        $validatedData = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'creditos' => 'required|integer|min:1',
+            'carrera_id' => 'required|exists:carreras,id',
+        ]);
+
+        $materia = Materia::create($validatedData);
+        return response()->json($materia, 201);
     }
 
     public function show($id)
     {
-        return Materia::with('carrera')->findOrFail($id);
+        $materia = Materia::with('carrera')->findOrFail($id);
+        return response()->json($materia);
     }
 
     public function update(Request $request, $id)
     {
         $materia = Materia::findOrFail($id);
-        $materia->update($request->all());
-        return $materia;
+
+        $validatedData = $request->validate([
+            'nombre' => 'sometimes|required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'creditos' => 'sometimes|required|integer|min:1',
+            'carrera_id' => 'sometimes|required|exists:carreras,id',
+        ]);
+
+        $materia->update($validatedData);
+        return response()->json($materia);
     }
 
     public function destroy($id)
     {
-        Materia::destroy($id);
+        $materia = Materia::findOrFail($id);
+        $materia->delete();
+        
         return response()->json(['message' => 'Materia eliminada']);
     }
 }
